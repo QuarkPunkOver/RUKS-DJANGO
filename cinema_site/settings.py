@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os.path
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,6 +19,11 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 ALLOWED_HOSTS = []
 DEBUG = True
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+#DATABASES['default'].update(db_from_env)
+
+
 # Application definition
 DATABASES = {
     'default': {
@@ -25,6 +31,7 @@ DATABASES = {
         'NAME': BASE_DIR / "db.sqlite3",
     }
 }
+
 INSTALLED_APPS = [
     'modeltranslation',
     'django.contrib.admin',
@@ -43,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -163,3 +171,4 @@ REST_FRAMEWORK = {
 }
 
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
